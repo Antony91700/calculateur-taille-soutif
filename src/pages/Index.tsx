@@ -162,6 +162,22 @@ const Index = () => {
             <CardDescription>Analysez le contenu d'un site web en entrant son URL</CardDescription>
           </CardHeader>
           <CardContent>
+            <div className="mb-4">
+              <Button 
+                onClick={() => {
+                  const urlInput = document.querySelector('input[type="url"]') as HTMLInputElement;
+                  if (urlInput) {
+                    urlInput.value = 'https://www.abrathatfits.org/calculator.php';
+                    // Déclencher l'événement change pour mettre à jour l'état du formulaire
+                    urlInput.dispatchEvent(new Event('change', { bubbles: true }));
+                  }
+                }}
+                variant="outline"
+                className="w-full mb-4"
+              >
+                Analyser abrathatfits.org
+              </Button>
+            </div>
             <CrawlForm />
           </CardContent>
         </Card>
