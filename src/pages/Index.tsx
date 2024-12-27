@@ -111,10 +111,10 @@ const Index = () => {
               <TabsContent value="size" className="space-y-4">
                 <div className="grid gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="bandSize">Tour de bande</Label>
+                    <Label htmlFor="bandSize">Tour sous poitrine</Label>
                     <Select onValueChange={setBandSize}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Sélectionnez le tour de bande" />
+                        <SelectValue placeholder="Sélectionnez le tour sous poitrine" />
                       </SelectTrigger>
                       <SelectContent>
                         {[70, 75, 80, 85, 90, 95, 100, 105, 110].map((size) => (
