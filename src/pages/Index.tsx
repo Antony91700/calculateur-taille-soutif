@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { cmToBraSize, braSizeToCm } from '@/utils/braCalculator';
+import { CrawlForm } from '@/components/CrawlForm';
 
 const Index = () => {
   const { toast } = useToast();
@@ -67,7 +68,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-pink-light p-4 sm:p-8">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto space-y-8">
         <Card className="bg-white shadow-lg">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-pink-dark">Calculateur de Taille de Soutien-gorge</CardTitle>
@@ -152,6 +153,16 @@ const Index = () => {
                 <p className="whitespace-pre-line">{result}</p>
               </div>
             )}
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white shadow-lg">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold text-pink-dark">Analyseur de Site Web</CardTitle>
+            <CardDescription>Analysez le contenu d'un site web en entrant son URL</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <CrawlForm />
           </CardContent>
         </Card>
       </div>
