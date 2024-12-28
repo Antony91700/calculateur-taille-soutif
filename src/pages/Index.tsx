@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/components/ui/use-toast";
 import { cmToBraSize, braSizeToCm, calculateAdvancedBraSize } from '@/utils/braCalculator';
 import AdvancedMeasurementForm from '@/components/AdvancedMeasurementForm';
+import MeasurementInstructions from '@/components/MeasurementInstructions';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { ThemeProvider } from 'next-themes';
 
@@ -159,6 +160,7 @@ const Index = () => {
                 </TabsContent>
 
                 <TabsContent value="advanced">
+                  <MeasurementInstructions />
                   <AdvancedMeasurementForm
                     tightUnderBust={tightUnderBust}
                     setTightUnderBust={setTightUnderBust}
