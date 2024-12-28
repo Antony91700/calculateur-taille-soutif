@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/components/ui/use-toast";
 import { cmToBraSize, braSizeToCm, calculateAdvancedBraSize } from '@/utils/braCalculator';
 import AdvancedMeasurementForm from '@/components/AdvancedMeasurementForm';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { ThemeProvider } from 'next-themes';
 
 const Index = () => {
   const { toast } = useToast();
@@ -111,115 +113,118 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-pink-light p-4 sm:p-8">
-      <div className="max-w-2xl mx-auto space-y-8">
-        <Card className="bg-white shadow-lg">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-pink-dark">Calculateur de Taille de Soutien-gorge</CardTitle>
-            <CardDescription>Convertissez vos mesures en taille ou vice versa</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="cm" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="cm">Mesure Simple</TabsTrigger>
-                <TabsTrigger value="advanced">Mesure Avancée</TabsTrigger>
-                <TabsTrigger value="size">Taille → Mesures</TabsTrigger>
-              </TabsList>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <div className="min-h-screen bg-background p-4 sm:p-8">
+        <ThemeToggle />
+        <div className="max-w-2xl mx-auto space-y-8">
+          <Card className="bg-card">
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl font-bold text-foreground">Calculateur de Taille de Soutien-gorge</CardTitle>
+              <CardDescription className="text-muted-foreground">Convertissez vos mesures en taille ou vice versa</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="cm" className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="cm">Mesure Simple</TabsTrigger>
+                  <TabsTrigger value="advanced">Mesure Avancée</TabsTrigger>
+                  <TabsTrigger value="size">Taille → Mesures</TabsTrigger>
+                </TabsList>
 
-              <TabsContent value="cm" className="space-y-4">
-                <div className="grid gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="underBust">Tour de dessous de poitrine (cm)</Label>
-                    <Input
-                      id="underBust"
-                      type="number"
-                      value={underBust}
-                      onChange={(e) => setUnderBust(e.target.value)}
-                      placeholder="63-108 cm"
-                    />
+                <TabsContent value="cm" className="space-y-4">
+                  <div className="grid gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="underBust">Tour de dessous de poitrine (cm)</Label>
+                      <Input
+                        id="underBust"
+                        type="number"
+                        value={underBust}
+                        onChange={(e) => setUnderBust(e.target.value)}
+                        placeholder="63-108 cm"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="bust">Tour de poitrine (cm)</Label>
+                      <Input
+                        id="bust"
+                        type="number"
+                        value={bust}
+                        onChange={(e) => setBust(e.target.value)}
+                        placeholder="76-132 cm"
+                      />
+                    </div>
+                    <Button onClick={handleCmCalculation} className="bg-pink-dark hover:bg-pink">
+                      Calculer la taille
+                    </Button>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="bust">Tour de poitrine (cm)</Label>
-                    <Input
-                      id="bust"
-                      type="number"
-                      value={bust}
-                      onChange={(e) => setBust(e.target.value)}
-                      placeholder="76-132 cm"
-                    />
+                </TabsContent>
+
+                <TabsContent value="advanced">
+                  <AdvancedMeasurementForm
+                    tightUnderBust={tightUnderBust}
+                    setTightUnderBust={setTightUnderBust}
+                    looseUnderBust={looseUnderBust}
+                    setLooseUnderBust={setLooseUnderBust}
+                    snugUnderBust={snugUnderBust}
+                    setSnugUnderBust={setSnugUnderBust}
+                    standingBust={standingBust}
+                    setStandingBust={setStandingBust}
+                    leaningBust={leaningBust}
+                    setLeaningBust={setLeaningBust}
+                    lyingBust={lyingBust}
+                    setLyingBust={setLyingBust}
+                    onCalculate={handleAdvancedCalculation}
+                  />
+                </TabsContent>
+
+                <TabsContent value="size" className="space-y-4">
+                  <div className="grid gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="bandSize">Tour sous poitrine</Label>
+                      <Select onValueChange={setBandSize}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionnez le tour sous poitrine" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {[70, 75, 80, 85, 90, 95, 100, 105, 110].map((size) => (
+                            <SelectItem key={size} value={size.toString()}>
+                              {size}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="cupSize">Bonnet</Label>
+                      <Select onValueChange={setCupSize}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionnez la taille du bonnet" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {['AA', 'A', 'B', 'C', 'D', 'E', 'F', 'G'].map((size) => (
+                            <SelectItem key={size} value={size}>
+                              {size}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <Button onClick={handleSizeCalculation} className="bg-pink-dark hover:bg-pink">
+                      Obtenir les mesures
+                    </Button>
                   </div>
-                  <Button onClick={handleCmCalculation} className="bg-pink-dark hover:bg-pink">
-                    Calculer la taille
-                  </Button>
+                </TabsContent>
+              </Tabs>
+
+              {result && (
+                <div className="mt-6 p-4 bg-pink-light rounded-lg text-center">
+                  <p className="whitespace-pre-line">{result}</p>
                 </div>
-              </TabsContent>
-
-              <TabsContent value="advanced">
-                <AdvancedMeasurementForm
-                  tightUnderBust={tightUnderBust}
-                  setTightUnderBust={setTightUnderBust}
-                  looseUnderBust={looseUnderBust}
-                  setLooseUnderBust={setLooseUnderBust}
-                  snugUnderBust={snugUnderBust}
-                  setSnugUnderBust={setSnugUnderBust}
-                  standingBust={standingBust}
-                  setStandingBust={setStandingBust}
-                  leaningBust={leaningBust}
-                  setLeaningBust={setLeaningBust}
-                  lyingBust={lyingBust}
-                  setLyingBust={setLyingBust}
-                  onCalculate={handleAdvancedCalculation}
-                />
-              </TabsContent>
-
-              <TabsContent value="size" className="space-y-4">
-                <div className="grid gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="bandSize">Tour sous poitrine</Label>
-                    <Select onValueChange={setBandSize}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Sélectionnez le tour sous poitrine" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {[70, 75, 80, 85, 90, 95, 100, 105, 110].map((size) => (
-                          <SelectItem key={size} value={size.toString()}>
-                            {size}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="cupSize">Bonnet</Label>
-                    <Select onValueChange={setCupSize}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Sélectionnez la taille du bonnet" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {['AA', 'A', 'B', 'C', 'D', 'E', 'F', 'G'].map((size) => (
-                          <SelectItem key={size} value={size}>
-                            {size}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <Button onClick={handleSizeCalculation} className="bg-pink-dark hover:bg-pink">
-                    Obtenir les mesures
-                  </Button>
-                </div>
-              </TabsContent>
-            </Tabs>
-
-            {result && (
-              <div className="mt-6 p-4 bg-pink-light rounded-lg text-center">
-                <p className="whitespace-pre-line">{result}</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 };
 
