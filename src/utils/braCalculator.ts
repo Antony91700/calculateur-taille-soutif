@@ -3,6 +3,18 @@ type BraSize = {
   cup: string;
 };
 
+type ThreeMeasurements = {
+  tight: number;
+  loose: number;
+  snug: number;
+};
+
+type BustMeasurements = {
+  standing: number;
+  leaning: number;
+  lying: number;
+};
+
 export const cmToBraSize = (underBust: number, bust: number): BraSize | null => {
   if (underBust < 63 || underBust > 108 || bust < 76 || bust > 132) {
     return null;
@@ -63,4 +75,25 @@ export const braSizeToCm = (band: number, cup: string): { underBust: number[], b
     underBust: underBustRange,
     bust: bustRange
   };
+};
+
+export const calculateAdvancedBraSize = (
+  underBustMeasurements: ThreeMeasurements,
+  bustMeasurements: BustMeasurements
+): BraSize | null => {
+  // Calcul de la mesure sous-poitrine finale (moyenne pondérée)
+  const finalUnderBust = (
+    underBustMeasurements.tight * 0.2 +
+    underBustMeasurements.snug * 0.5 +
+    underBustMeasurements.loose * 0.3
+  );
+
+  // Calcul de la mesure de poitrine finale (moyenne pondérée)
+  const finalBust = (
+    bustMeasurements.standing * 0.3 +
+    bustMeasurements.leaning * 0.4 +
+    bustMeasurements.lying * 0.3
+  );
+
+  return cmToBraSize(finalUnderBust, finalBust);
 };
