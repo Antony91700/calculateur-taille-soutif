@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { cmToBraSize, braSizeToCm, calculateAdvancedBraSize } from '@/utils/braCalculator';
+import AdvancedMeasurementForm from '@/components/AdvancedMeasurementForm';
 
 const Index = () => {
   const { toast } = useToast();
@@ -87,7 +88,6 @@ const Index = () => {
       lying: parseFloat(lyingBust)
     };
 
-    // Vérification que toutes les mesures sont valides
     if (Object.values(underBustMeasurements).some(isNaN) || Object.values(bustMeasurements).some(isNaN)) {
       toast({
         title: "Erreur",
@@ -154,83 +154,22 @@ const Index = () => {
                 </div>
               </TabsContent>
 
-              <TabsContent value="advanced" className="space-y-4">
-                <div className="grid gap-4">
-                  <div className="space-y-4">
-                    <h3 className="font-semibold">Tour de dessous de poitrine</h3>
-                    <div className="grid gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="tightUnderBust">Mesure serrée (cm)</Label>
-                        <Input
-                          id="tightUnderBust"
-                          type="number"
-                          value={tightUnderBust}
-                          onChange={(e) => setTightUnderBust(e.target.value)}
-                          placeholder="Mesure très serrée"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="snugUnderBust">Mesure ajustée (cm)</Label>
-                        <Input
-                          id="snugUnderBust"
-                          type="number"
-                          value={snugUnderBust}
-                          onChange={(e) => setSnugUnderBust(e.target.value)}
-                          placeholder="Mesure confortable"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="looseUnderBust">Mesure non-serrée (cm)</Label>
-                        <Input
-                          id="looseUnderBust"
-                          type="number"
-                          value={looseUnderBust}
-                          onChange={(e) => setLooseUnderBust(e.target.value)}
-                          placeholder="Mesure lâche"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <h3 className="font-semibold">Tour de poitrine</h3>
-                    <div className="grid gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="standingBust">Mesure debout (cm)</Label>
-                        <Input
-                          id="standingBust"
-                          type="number"
-                          value={standingBust}
-                          onChange={(e) => setStandingBust(e.target.value)}
-                          placeholder="Debout, droite"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="leaningBust">Mesure penchée (cm)</Label>
-                        <Input
-                          id="leaningBust"
-                          type="number"
-                          value={leaningBust}
-                          onChange={(e) => setLeaningBust(e.target.value)}
-                          placeholder="Penchée en avant"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="lyingBust">Mesure allongée (cm)</Label>
-                        <Input
-                          id="lyingBust"
-                          type="number"
-                          value={lyingBust}
-                          onChange={(e) => setLyingBust(e.target.value)}
-                          placeholder="Allongée sur le dos"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <Button onClick={handleAdvancedCalculation} className="bg-pink-dark hover:bg-pink">
-                    Calculer la taille
-                  </Button>
-                </div>
+              <TabsContent value="advanced">
+                <AdvancedMeasurementForm
+                  tightUnderBust={tightUnderBust}
+                  setTightUnderBust={setTightUnderBust}
+                  looseUnderBust={looseUnderBust}
+                  setLooseUnderBust={setLooseUnderBust}
+                  snugUnderBust={snugUnderBust}
+                  setSnugUnderBust={setSnugUnderBust}
+                  standingBust={standingBust}
+                  setStandingBust={setStandingBust}
+                  leaningBust={leaningBust}
+                  setLeaningBust={setLeaningBust}
+                  lyingBust={lyingBust}
+                  setLyingBust={setLyingBust}
+                  onCalculate={handleAdvancedCalculation}
+                />
               </TabsContent>
 
               <TabsContent value="size" className="space-y-4">
