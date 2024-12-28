@@ -38,17 +38,17 @@ const Index = () => {
       return;
     }
 
-    const braSize = cmToBraSize(ub, b);
-    if (!braSize) {
+    const result = cmToBraSize(ub, b);
+    if ('error' in result) {
       toast({
         title: "Mesures hors limites",
-        description: "Les mesures entrées sont en dehors des plages valides",
+        description: result.error,
         variant: "destructive"
       });
       return;
     }
 
-    setResult(`Votre taille de soutien-gorge est : ${braSize.band}${braSize.cup}`);
+    setResult(`Votre taille de soutien-gorge est : ${result.band}${result.cup}`);
   };
 
   const handleSizeCalculation = () => {
@@ -61,17 +61,17 @@ const Index = () => {
       return;
     }
 
-    const measurements = braSizeToCm(parseInt(bandSize), cupSize);
-    if (!measurements) {
+    const result = braSizeToCm(parseInt(bandSize), cupSize);
+    if ('error' in result) {
       toast({
         title: "Erreur",
-        description: "Taille invalide",
+        description: result.error,
         variant: "destructive"
       });
       return;
     }
 
-    setResult(`Tour de dessous de poitrine : ${measurements.underBust[0]}-${measurements.underBust[1]} cm\nTour de poitrine : ${measurements.bust[0]}-${measurements.bust[1]} cm`);
+    setResult(`Tour de dessous de poitrine : ${result.underBust[0]}-${result.underBust[1]} cm\nTour de poitrine : ${result.bust[0]}-${result.bust[1]} cm`);
   };
 
   const handleAdvancedCalculation = () => {
@@ -97,17 +97,17 @@ const Index = () => {
       return;
     }
 
-    const braSize = calculateAdvancedBraSize(underBustMeasurements, bustMeasurements);
-    if (!braSize) {
+    const result = calculateAdvancedBraSize(underBustMeasurements, bustMeasurements);
+    if ('error' in result) {
       toast({
         title: "Mesures hors limites",
-        description: "Les mesures entrées sont en dehors des plages valides",
+        description: result.error,
         variant: "destructive"
       });
       return;
     }
 
-    setResult(`Votre taille de soutien-gorge est : ${braSize.band}${braSize.cup}`);
+    setResult(`Votre taille de soutien-gorge est : ${result.band}${result.cup}`);
   };
 
   return (
