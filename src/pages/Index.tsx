@@ -179,10 +179,10 @@ const Index = () => {
                 <TabsContent value="size" className="space-y-4">
                   <div className="grid gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="bandSize">Tour sous poitrine</Label>
+                      <Label htmlFor="bandSize">Quelle est la taille de ton soutien-gorge actuel ?</Label>
                       <Select onValueChange={setBandSize}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Sélectionnez le tour sous poitrine" />
+                          <SelectValue placeholder="Choisis ta taille" />
                         </SelectTrigger>
                         <SelectContent>
                           {[70, 75, 80, 85, 90, 95, 100, 105, 110].map((size) => (
@@ -194,10 +194,10 @@ const Index = () => {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="cupSize">Bonnet</Label>
+                      <Label htmlFor="cupSize">Quelle taille de bonnet portes-tu ?</Label>
                       <Select onValueChange={setCupSize}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Sélectionnez la taille du bonnet" />
+                          <SelectValue placeholder="Choisis ton bonnet" />
                         </SelectTrigger>
                         <SelectContent>
                           {['AA', 'A', 'B', 'C', 'D', 'E', 'F', 'G'].map((size) => (
