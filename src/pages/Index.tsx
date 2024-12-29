@@ -127,7 +127,7 @@ const Index = () => {
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="cm">Mesure Simple</TabsTrigger>
                   <TabsTrigger value="advanced">Mesure Avancée</TabsTrigger>
-                  <TabsTrigger value="size">Taille → Mesures</TabsTrigger>
+                  <TabsTrigger value="size">Mesure du soutien-gorge</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="cm" className="space-y-4">
