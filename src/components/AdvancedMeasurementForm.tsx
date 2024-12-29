@@ -38,7 +38,7 @@ const AdvancedMeasurementForm = ({
   return (
     <div className="space-y-4">
       <MeasurementInstructions />
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-4">
           <h3 className="font-semibold">Tour de dessous de poitrine</h3>
           <div className="grid gap-4">
@@ -110,10 +110,10 @@ const AdvancedMeasurementForm = ({
             </div>
           </div>
         </div>
-        <Button onClick={onCalculate} className="bg-pink-dark hover:bg-pink w-full">
-          Calculer la taille
-        </Button>
       </div>
+      <Button onClick={onCalculate} className="bg-pink-dark hover:bg-pink w-full">
+        Calculer la taille
+      </Button>
     </div>
   );
 };
