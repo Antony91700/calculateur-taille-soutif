@@ -9,19 +9,17 @@ const MeasurementInstructions = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <p className="font-medium">Tour de dessous de poitrine :</p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <div className="text-center">
-                <img 
-                  src="/lovable-uploads/9e2e898f-495b-4834-94ff-470a12ca2134.png" 
-                  alt="Mesure 1-2-3"
-                  className="mx-auto h-40 object-contain"
-                />
-                <p className="text-sm mt-1">
-                  1: Mesure non-serrée<br/>
-                  2: Mesure ajustée<br/>
-                  3: Mesure serrée
-                </p>
-              </div>
+            <div className="text-center">
+              <img 
+                src="/lovable-uploads/9e2e898f-495b-4834-94ff-470a12ca2134.png" 
+                alt="Mesure 1-2-3"
+                className="mx-auto h-40 object-contain"
+              />
+              <p className="text-sm mt-1">
+                1: Mesure non-serrée<br/>
+                2: Mesure ajustée<br/>
+                3: Mesure serrée
+              </p>
             </div>
           </div>
           <div className="space-y-2">
