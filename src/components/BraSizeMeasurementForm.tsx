@@ -21,13 +21,7 @@ const BraSizeMeasurementForm = ({
     <div className="grid gap-4">
       <div className="space-y-2">
         <Label htmlFor="bandSize">Quelle est la taille de ton soutien-gorge actuel ?</Label>
-        <Select 
-          value={bandSize} 
-          onValueChange={(value) => {
-            console.log('Selected band size:', value);
-            setBandSize(value);
-          }}
-        >
+        <Select value={bandSize} onValueChange={setBandSize}>
           <SelectTrigger>
             <SelectValue placeholder="Choisis ta taille" />
           </SelectTrigger>
@@ -42,13 +36,7 @@ const BraSizeMeasurementForm = ({
       </div>
       <div className="space-y-2">
         <Label htmlFor="cupSize">Quelle taille de bonnet portes-tu ?</Label>
-        <Select 
-          value={cupSize} 
-          onValueChange={(value) => {
-            console.log('Selected cup size:', value);
-            setCupSize(value);
-          }}
-        >
+        <Select value={cupSize} onValueChange={setCupSize}>
           <SelectTrigger>
             <SelectValue placeholder="Choisis ton bonnet" />
           </SelectTrigger>
@@ -61,13 +49,7 @@ const BraSizeMeasurementForm = ({
           </SelectContent>
         </Select>
       </div>
-      <Button 
-        onClick={() => {
-          console.log('Calculate clicked with bandSize:', bandSize, 'cupSize:', cupSize);
-          onCalculate();
-        }} 
-        className="bg-pink-dark hover:bg-pink"
-      >
+      <Button onClick={onCalculate} className="bg-pink-dark hover:bg-pink">
         Obtenir les mesures
       </Button>
     </div>
