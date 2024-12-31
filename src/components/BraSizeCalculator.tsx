@@ -48,6 +48,8 @@ const BraSizeCalculator = () => {
     }
 
     const calculatedResult = cmToBraSize(ub, b)
+    console.log("Résultat du calcul simple:", calculatedResult)
+    
     if ('error' in calculatedResult) {
       toast({
         title: "Mesures hors limites",
@@ -70,7 +72,10 @@ const BraSizeCalculator = () => {
       return
     }
 
+    console.log("Calcul à partir de la taille:", { bandSize, cupSize })
     const calculatedResult = braSizeToCm(parseInt(bandSize), cupSize)
+    console.log("Résultat du calcul de taille:", calculatedResult)
+    
     if ('error' in calculatedResult) {
       toast({
         title: "Erreur",
@@ -107,6 +112,8 @@ Tour de poitrine : ${calculatedResult.bust[0]}-${calculatedResult.bust[1]} cm`)
       lying: parseFloat(lyingBust)
     }
 
+    console.log("Mesures avancées:", { underBustMeasurements, bustMeasurements })
+
     if (Object.values(underBustMeasurements).some(isNaN) || 
         Object.values(bustMeasurements).some(isNaN)) {
       toast({
@@ -118,6 +125,8 @@ Tour de poitrine : ${calculatedResult.bust[0]}-${calculatedResult.bust[1]} cm`)
     }
 
     const calculatedResult = calculateAdvancedBraSize(underBustMeasurements, bustMeasurements)
+    console.log("Résultat du calcul avancé:", calculatedResult)
+    
     if ('error' in calculatedResult) {
       toast({
         title: "Mesures hors limites",

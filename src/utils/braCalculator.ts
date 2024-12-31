@@ -18,6 +18,8 @@ type BustMeasurements = {
 type Result = BraSize | { error: string };
 
 export const cmToBraSize = (underBust: number, bust: number): Result => {
+  console.log("Entrée cmToBraSize:", { underBust, bust });
+  
   // Validation des mesures
   if (underBust < 63 || underBust > 108) {
     return { error: "Le tour de dessous de poitrine doit être entre 63 et 108 cm" };
@@ -42,7 +44,9 @@ export const cmToBraSize = (underBust: number, bust: number): Result => {
     103: 110, 104: 110, 107: 110
   };
 
-  const band = bandSizes[Math.round(underBust)];
+  const roundedUnderBust = Math.round(underBust);
+  const band = bandSizes[roundedUnderBust];
+  
   if (!band) {
     return { error: "Tour de dessous de poitrine non standard" };
   }
@@ -56,6 +60,7 @@ export const cmToBraSize = (underBust: number, bust: number): Result => {
     return { error: "Différence de mesures hors limites pour le calcul du bonnet" };
   }
 
+  console.log("Résultat cmToBraSize:", { band, cup: cupSizes[cupIndex] });
   return {
     band,
     cup: cupSizes[cupIndex]
@@ -63,6 +68,8 @@ export const cmToBraSize = (underBust: number, bust: number): Result => {
 };
 
 export const braSizeToCm = (band: number, cup: string): { underBust: [number, number], bust: [number, number] } | { error: string } => {
+  console.log("Entrée braSizeToCm:", { band, cup });
+  
   const cupSizes = ['AA', 'A', 'B', 'C', 'D', 'E', 'F', 'G'];
   const cupIndex = cupSizes.indexOf(cup);
   
@@ -94,6 +101,7 @@ export const braSizeToCm = (band: number, cup: string): { underBust: [number, nu
     Math.round(underBustRange[1] + cupDifference)
   ];
 
+  console.log("Résultat braSizeToCm:", { underBustRange, bustRange });
   return {
     underBust: underBustRange,
     bust: bustRange
@@ -104,6 +112,8 @@ export const calculateAdvancedBraSize = (
   underBustMeasurements: ThreeMeasurements,
   bustMeasurements: BustMeasurements
 ): Result => {
+  console.log("Entrée calculateAdvancedBraSize:", { underBustMeasurements, bustMeasurements });
+  
   // Validation des mesures
   const allMeasurements = [
     ...Object.values(underBustMeasurements),
@@ -125,5 +135,6 @@ export const calculateAdvancedBraSize = (
     bustMeasurements.leaning * 0.4 +
     bustMeasurements.lying * 0.3;
 
+  console.log("Moyennes pondérées:", { weightedUnderBust, weightedBust });
   return cmToBraSize(weightedUnderBust, weightedBust);
 };
