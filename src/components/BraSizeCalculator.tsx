@@ -26,6 +26,15 @@ const BraSizeCalculator = () => {
   const [lyingBust, setLyingBust] = useState('')
 
   const handleCmCalculation = () => {
+    if (!underBust || !bust) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez entrer toutes les mesures requises",
+        variant: "destructive"
+      })
+      return
+    }
+
     const ub = parseFloat(underBust)
     const b = parseFloat(bust)
     
@@ -38,17 +47,17 @@ const BraSizeCalculator = () => {
       return
     }
 
-    const result = cmToBraSize(ub, b)
-    if ('error' in result) {
+    const calculatedResult = cmToBraSize(ub, b)
+    if ('error' in calculatedResult) {
       toast({
         title: "Mesures hors limites",
-        description: result.error,
+        description: calculatedResult.error,
         variant: "destructive"
       })
       return
     }
 
-    setResult(`Votre taille de soutien-gorge est : ${result.band}${result.cup}`)
+    setResult(`Votre taille de soutien-gorge est : ${calculatedResult.band}${calculatedResult.cup}`)
   }
 
   const handleSizeCalculation = () => {
@@ -61,21 +70,31 @@ const BraSizeCalculator = () => {
       return
     }
 
-    const result = braSizeToCm(parseInt(bandSize), cupSize)
-    if ('error' in result) {
+    const calculatedResult = braSizeToCm(parseInt(bandSize), cupSize)
+    if ('error' in calculatedResult) {
       toast({
         title: "Erreur",
-        description: result.error,
+        description: calculatedResult.error,
         variant: "destructive"
       })
       return
     }
 
-    setResult(`Tour de dessous de poitrine : ${result.underBust[0]}-${result.underBust[1]} cm
-Tour de poitrine : ${result.bust[0]}-${result.bust[1]} cm`)
+    setResult(`Tour de dessous de poitrine : ${calculatedResult.underBust[0]}-${calculatedResult.underBust[1]} cm
+Tour de poitrine : ${calculatedResult.bust[0]}-${calculatedResult.bust[1]} cm`)
   }
 
   const handleAdvancedCalculation = () => {
+    if (!tightUnderBust || !looseUnderBust || !snugUnderBust || 
+        !standingBust || !leaningBust || !lyingBust) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez entrer toutes les mesures requises",
+        variant: "destructive"
+      })
+      return
+    }
+
     const underBustMeasurements = {
       tight: parseFloat(tightUnderBust),
       loose: parseFloat(looseUnderBust),
@@ -88,26 +107,27 @@ Tour de poitrine : ${result.bust[0]}-${result.bust[1]} cm`)
       lying: parseFloat(lyingBust)
     }
 
-    if (Object.values(underBustMeasurements).some(isNaN) || Object.values(bustMeasurements).some(isNaN)) {
+    if (Object.values(underBustMeasurements).some(isNaN) || 
+        Object.values(bustMeasurements).some(isNaN)) {
       toast({
         title: "Erreur",
-        description: "Veuillez entrer toutes les mesures requises",
+        description: "Veuillez entrer des mesures valides",
         variant: "destructive"
       })
       return
     }
 
-    const result = calculateAdvancedBraSize(underBustMeasurements, bustMeasurements)
-    if ('error' in result) {
+    const calculatedResult = calculateAdvancedBraSize(underBustMeasurements, bustMeasurements)
+    if ('error' in calculatedResult) {
       toast({
         title: "Mesures hors limites",
-        description: result.error,
+        description: calculatedResult.error,
         variant: "destructive"
       })
       return
     }
 
-    setResult(`Votre taille de soutien-gorge est : ${result.band}${result.cup}`)
+    setResult(`Votre taille de soutien-gorge est : ${calculatedResult.band}${calculatedResult.cup}`)
   }
 
   return (

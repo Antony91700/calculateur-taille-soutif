@@ -15,27 +15,21 @@ type BustMeasurements = {
   lying: number;
 };
 
-const validateMeasurement = (measurement: number, min: number, max: number, name: string): string | null => {
-  if (measurement < min) {
-    return `La mesure ${name} (${measurement} cm) est trop petite. Elle doit être d'au moins ${min} cm.`;
+type Result = BraSize | { error: string };
+
+export const cmToBraSize = (underBust: number, bust: number): Result => {
+  // Validation des mesures
+  if (underBust < 63 || underBust > 108) {
+    return { error: "Le tour de dessous de poitrine doit être entre 63 et 108 cm" };
   }
-  if (measurement > max) {
-    return `La mesure ${name} (${measurement} cm) est trop grande. Elle doit être au maximum de ${max} cm.`;
+  if (bust < 76 || bust > 132) {
+    return { error: "Le tour de poitrine doit être entre 76 et 132 cm" };
   }
-  return null;
-};
-
-export const cmToBraSize = (underBust: number, bust: number): BraSize | { error: string } => {
-  const underBustError = validateMeasurement(underBust, 63, 108, "du tour de dessous de poitrine");
-  if (underBustError) return { error: underBustError };
-
-  const bustError = validateMeasurement(bust, 76, 132, "du tour de poitrine");
-  if (bustError) return { error: bustError };
-
   if (bust <= underBust) {
     return { error: "Le tour de poitrine doit être plus grand que le tour de dessous de poitrine" };
   }
 
+  // Calcul de la taille de bande
   const bandSizes: { [key: number]: number } = {
     63: 70, 64: 70, 67: 70,
     68: 75, 69: 75, 72: 75,
@@ -48,17 +42,18 @@ export const cmToBraSize = (underBust: number, bust: number): BraSize | { error:
     103: 110, 104: 110, 107: 110
   };
 
+  const band = bandSizes[Math.round(underBust)];
+  if (!band) {
+    return { error: "Tour de dessous de poitrine non standard" };
+  }
+
+  // Calcul de la taille de bonnet
   const cupSizes = ['AA', 'A', 'B', 'C', 'D', 'E', 'F', 'G'];
   const difference = bust - underBust;
   const cupIndex = Math.floor(difference / 2.5) - 4;
-  
-  const band = bandSizes[underBust];
-  if (!band) {
-    return { error: `Le tour de dessous de poitrine de ${underBust} cm ne correspond à aucune taille standard` };
-  }
 
   if (cupIndex < 0 || cupIndex >= cupSizes.length) {
-    return { error: `La différence de ${difference} cm entre le tour de poitrine et le tour de dessous de poitrine est hors limites` };
+    return { error: "Différence de mesures hors limites pour le calcul du bonnet" };
   }
 
   return {
@@ -67,19 +62,20 @@ export const cmToBraSize = (underBust: number, bust: number): BraSize | { error:
   };
 };
 
-export const braSizeToCm = (band: number, cup: string): { underBust: number[], bust: number[] } | { error: string } => {
+export const braSizeToCm = (band: number, cup: string): { underBust: [number, number], bust: [number, number] } | { error: string } => {
   const cupSizes = ['AA', 'A', 'B', 'C', 'D', 'E', 'F', 'G'];
   const cupIndex = cupSizes.indexOf(cup);
   
   if (cupIndex === -1) {
-    return { error: `La taille de bonnet ${cup} n'est pas valide. Les tailles valides sont : ${cupSizes.join(', ')}` };
+    return { error: "Taille de bonnet invalide" };
   }
 
   if (![70, 75, 80, 85, 90, 95, 100, 105, 110].includes(band)) {
-    return { error: `Le tour de dos ${band} n'est pas valide. Les tailles valides sont : 70, 75, 80, 85, 90, 95, 100, 105, 110` };
+    return { error: "Tour de dos invalide" };
   }
 
-  const underBustRanges: { [key: number]: number[] } = {
+  // Calcul des plages de mesures
+  const underBustRanges: { [key: number]: [number, number] } = {
     70: [63, 67],
     75: [68, 72],
     80: [73, 77],
@@ -91,9 +87,12 @@ export const braSizeToCm = (band: number, cup: string): { underBust: number[], b
     110: [103, 107]
   };
 
-  const cupDifference = (cupIndex + 4) * 2.5;
   const underBustRange = underBustRanges[band];
-  const bustRange = underBustRange.map(ub => ub + cupDifference);
+  const cupDifference = (cupIndex + 4) * 2.5;
+  const bustRange: [number, number] = [
+    Math.round(underBustRange[0] + cupDifference),
+    Math.round(underBustRange[1] + cupDifference)
+  ];
 
   return {
     underBust: underBustRange,
@@ -104,42 +103,27 @@ export const braSizeToCm = (band: number, cup: string): { underBust: number[], b
 export const calculateAdvancedBraSize = (
   underBustMeasurements: ThreeMeasurements,
   bustMeasurements: BustMeasurements
-): BraSize | { error: string } => {
-  // Validation des mesures du tour de dos
-  const underBustErrors = [
-    validateMeasurement(underBustMeasurements.tight, 63, 108, "serrée du tour de dos"),
-    validateMeasurement(underBustMeasurements.snug, 63, 108, "ajustée du tour de dos"),
-    validateMeasurement(underBustMeasurements.loose, 63, 108, "non-serrée du tour de dos")
-  ].filter(error => error !== null);
+): Result => {
+  // Validation des mesures
+  const allMeasurements = [
+    ...Object.values(underBustMeasurements),
+    ...Object.values(bustMeasurements)
+  ];
 
-  if (underBustErrors.length > 0) {
-    return { error: underBustErrors[0]! };
+  if (allMeasurements.some(m => m < 63 || m > 132)) {
+    return { error: "Toutes les mesures doivent être entre 63 et 132 cm" };
   }
 
-  // Validation des mesures de la poitrine
-  const bustErrors = [
-    validateMeasurement(bustMeasurements.standing, 76, 132, "debout de la poitrine"),
-    validateMeasurement(bustMeasurements.leaning, 76, 132, "penchée de la poitrine"),
-    validateMeasurement(bustMeasurements.lying, 76, 132, "allongée de la poitrine")
-  ].filter(error => error !== null);
-
-  if (bustErrors.length > 0) {
-    return { error: bustErrors[0]! };
-  }
-
-  // Calcul de la mesure sous-poitrine finale (moyenne pondérée)
-  const finalUnderBust = (
+  // Calcul des moyennes pondérées
+  const weightedUnderBust = 
     underBustMeasurements.tight * 0.2 +
     underBustMeasurements.snug * 0.5 +
-    underBustMeasurements.loose * 0.3
-  );
+    underBustMeasurements.loose * 0.3;
 
-  // Calcul de la mesure de poitrine finale (moyenne pondérée)
-  const finalBust = (
+  const weightedBust = 
     bustMeasurements.standing * 0.3 +
     bustMeasurements.leaning * 0.4 +
-    bustMeasurements.lying * 0.3
-  );
+    bustMeasurements.lying * 0.3;
 
-  return cmToBraSize(finalUnderBust, finalBust);
+  return cmToBraSize(weightedUnderBust, weightedBust);
 };
