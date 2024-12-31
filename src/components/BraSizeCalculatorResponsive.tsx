@@ -47,9 +47,24 @@ const BraSizeCalculatorResponsive = () => {
       <CardContent className="p-3 sm:p-6">
         <Tabs defaultValue="cm" className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-4">
-            <TabsTrigger value="cm" className="text-xs sm:text-sm">Mesure Simple</TabsTrigger>
-            <TabsTrigger value="advanced" className="text-xs sm:text-sm">Mesure Avancée</TabsTrigger>
-            <TabsTrigger value="size" className="text-xs sm:text-sm">Taille actuelle</TabsTrigger>
+            <TabsTrigger 
+              value="cm" 
+              className="text-[10px] leading-tight sm:text-sm px-1 sm:px-3 py-1.5 whitespace-normal h-auto min-h-[2.5rem]"
+            >
+              Mesure Simple
+            </TabsTrigger>
+            <TabsTrigger 
+              value="advanced" 
+              className="text-[10px] leading-tight sm:text-sm px-1 sm:px-3 py-1.5 whitespace-normal h-auto min-h-[2.5rem]"
+            >
+              Mesure Avancée
+            </TabsTrigger>
+            <TabsTrigger 
+              value="size" 
+              className="text-[10px] leading-tight sm:text-sm px-1 sm:px-3 py-1.5 whitespace-normal h-auto min-h-[2.5rem]"
+            >
+              Taille actuelle
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="cm">
