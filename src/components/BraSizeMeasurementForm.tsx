@@ -22,12 +22,16 @@ const BraSizeMeasurementForm = ({
       <div className="space-y-2">
         <Label htmlFor="bandSize">Quelle est la taille de ton soutien-gorge actuel ?</Label>
         <Select onValueChange={setBandSize} value={bandSize}>
-          <SelectTrigger>
+          <SelectTrigger className="bg-background text-foreground border-input">
             <SelectValue placeholder="Choisis ta taille" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper" className="bg-background border-input">
             {[70, 75, 80, 85, 90, 95, 100, 105, 110].map((size) => (
-              <SelectItem key={size} value={size.toString()}>
+              <SelectItem 
+                key={size} 
+                value={size.toString()}
+                className="hover:bg-accent hover:text-accent-foreground"
+              >
                 {size}
               </SelectItem>
             ))}
@@ -37,12 +41,16 @@ const BraSizeMeasurementForm = ({
       <div className="space-y-2">
         <Label htmlFor="cupSize">Quelle taille de bonnet portes-tu ?</Label>
         <Select onValueChange={setCupSize} value={cupSize}>
-          <SelectTrigger>
+          <SelectTrigger className="bg-background text-foreground border-input">
             <SelectValue placeholder="Choisis ton bonnet" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper" className="bg-background border-input">
             {['AA', 'A', 'B', 'C', 'D', 'E', 'F', 'G'].map((size) => (
-              <SelectItem key={size} value={size}>
+              <SelectItem 
+                key={size} 
+                value={size}
+                className="hover:bg-accent hover:text-accent-foreground"
+              >
                 {size}
               </SelectItem>
             ))}
