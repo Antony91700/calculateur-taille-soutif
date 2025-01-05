@@ -26,7 +26,9 @@ const SimpleMeasurementForm = ({
           type="number"
           value={underBust}
           onChange={(e) => setUnderBust(e.target.value)}
-          placeholder="63-108 cm"
+          placeholder="60-120 cm"
+          min="60"
+          max="120"
         />
       </div>
       <div className="space-y-2">
@@ -36,7 +38,9 @@ const SimpleMeasurementForm = ({
           type="number"
           value={bust}
           onChange={(e) => setBust(e.target.value)}
-          placeholder="76-132 cm"
+          placeholder="70-150 cm"
+          min="70"
+          max="150"
         />
       </div>
       <Button onClick={onCalculate} className="bg-pink-dark hover:bg-pink">
