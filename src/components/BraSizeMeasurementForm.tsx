@@ -28,19 +28,20 @@ const BraSizeMeasurementForm = ({
         >
           <SelectTrigger 
             id="bandSize"
-            className="bg-background text-foreground border-input"
+            className="w-full bg-background text-foreground border-input touch-manipulation"
           >
             <SelectValue placeholder="Choisis ta taille" />
           </SelectTrigger>
           <SelectContent 
             position="popper" 
-            className="bg-background border-input max-h-[300px] overflow-y-auto"
+            className="bg-background border-input max-h-[200px] overflow-y-auto touch-manipulation z-50"
+            sideOffset={0}
           >
             {[70, 75, 80, 85, 90, 95, 100, 105, 110].map((size) => (
               <SelectItem 
                 key={size} 
                 value={size.toString()}
-                className="hover:bg-accent hover:text-accent-foreground cursor-pointer"
+                className="hover:bg-accent hover:text-accent-foreground cursor-pointer py-3 px-2"
               >
                 {size}
               </SelectItem>
@@ -57,19 +58,20 @@ const BraSizeMeasurementForm = ({
         >
           <SelectTrigger 
             id="cupSize"
-            className="bg-background text-foreground border-input"
+            className="w-full bg-background text-foreground border-input touch-manipulation"
           >
             <SelectValue placeholder="Choisis ton bonnet" />
           </SelectTrigger>
           <SelectContent 
             position="popper" 
-            className="bg-background border-input max-h-[300px] overflow-y-auto"
+            className="bg-background border-input max-h-[200px] overflow-y-auto touch-manipulation z-50"
+            sideOffset={0}
           >
             {['AA', 'A', 'B', 'C', 'D', 'E', 'F', 'G'].map((size) => (
               <SelectItem 
                 key={size} 
                 value={size}
-                className="hover:bg-accent hover:text-accent-foreground cursor-pointer"
+                className="hover:bg-accent hover:text-accent-foreground cursor-pointer py-3 px-2"
               >
                 {size}
               </SelectItem>
@@ -79,7 +81,7 @@ const BraSizeMeasurementForm = ({
       </div>
       <Button 
         onClick={onCalculate} 
-        className="bg-pink-dark hover:bg-pink text-white"
+        className="bg-pink-dark hover:bg-pink text-white w-full"
       >
         Obtenir les mesures
       </Button>
