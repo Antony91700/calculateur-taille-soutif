@@ -70,6 +70,50 @@ export const cmToBraSize = (underBust: number, bust: number): Result => {
   };
 };
 
+export const calculateAdvancedBraSize = (
+  underBustMeasurements: ThreeMeasurements,
+  bustMeasurements: BustMeasurements
+): Result => {
+  console.log("Entrée calculateAdvancedBraSize:", { underBustMeasurements, bustMeasurements });
+  
+  // Validation des mesures
+  const allMeasurements = [
+    ...Object.values(underBustMeasurements),
+    ...Object.values(bustMeasurements)
+  ];
+
+  if (allMeasurements.some(m => m < 60 || m > 150)) {
+    return { error: "Toutes les mesures doivent être entre 60 et 150 cm" };
+  }
+
+  // Vérification de la cohérence des mesures sous-poitrine
+  if (underBustMeasurements.tight > underBustMeasurements.snug || 
+      underBustMeasurements.snug > underBustMeasurements.loose) {
+    return { error: "Les mesures sous-poitrine ne sont pas cohérentes. La mesure serrée doit être la plus petite, suivie de la mesure ajustée, puis de la mesure non-serrée." };
+  }
+
+  // Calcul des moyennes pondérées avec plus d'importance sur la mesure ajustée
+  const weightedUnderBust = 
+    underBustMeasurements.tight * 0.2 +
+    underBustMeasurements.snug * 0.6 +  // Augmentation du poids de la mesure ajustée
+    underBustMeasurements.loose * 0.2;
+
+  // Moyenne pondérée des mesures de poitrine
+  const weightedBust = 
+    bustMeasurements.standing * 0.3 +
+    bustMeasurements.leaning * 0.4 +    // Plus de poids sur la mesure penchée
+    bustMeasurements.lying * 0.3;
+
+  console.log("Moyennes pondérées:", { weightedUnderBust, weightedBust });
+
+  // Vérification supplémentaire de la cohérence
+  if (weightedBust <= weightedUnderBust) {
+    return { error: "Le tour de poitrine moyen doit être plus grand que le tour sous-poitrine moyen" };
+  }
+
+  return cmToBraSize(weightedUnderBust, weightedBust);
+};
+
 export const braSizeToCm = (band: number, cup: string): { underBust: [number, number], bust: [number, number] } | { error: string } => {
   console.log("Entrée braSizeToCm:", { band, cup });
   
@@ -113,35 +157,4 @@ export const braSizeToCm = (band: number, cup: string): { underBust: [number, nu
     underBust: underBustRange,
     bust: bustRange
   };
-};
-
-export const calculateAdvancedBraSize = (
-  underBustMeasurements: ThreeMeasurements,
-  bustMeasurements: BustMeasurements
-): Result => {
-  console.log("Entrée calculateAdvancedBraSize:", { underBustMeasurements, bustMeasurements });
-  
-  // Validation des mesures
-  const allMeasurements = [
-    ...Object.values(underBustMeasurements),
-    ...Object.values(bustMeasurements)
-  ];
-
-  if (allMeasurements.some(m => m < 63 || m > 132)) {
-    return { error: "Toutes les mesures doivent être entre 63 et 132 cm" };
-  }
-
-  // Calcul des moyennes pondérées
-  const weightedUnderBust = 
-    underBustMeasurements.tight * 0.2 +
-    underBustMeasurements.snug * 0.5 +
-    underBustMeasurements.loose * 0.3;
-
-  const weightedBust = 
-    bustMeasurements.standing * 0.3 +
-    bustMeasurements.leaning * 0.4 +
-    bustMeasurements.lying * 0.3;
-
-  console.log("Moyennes pondérées:", { weightedUnderBust, weightedBust });
-  return cmToBraSize(weightedUnderBust, weightedBust);
 };
