@@ -73,31 +73,35 @@ export const cmToBraSize = (underBust: number, bust: number): Result => {
 export const braSizeToCm = (band: number, cup: string): { underBust: [number, number], bust: [number, number] } | { error: string } => {
   console.log("Entrée braSizeToCm:", { band, cup });
   
-  const cupSizes = ['AA', 'A', 'B', 'C', 'D', 'E', 'F', 'G'];
+  const cupSizes = ['AA', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
   const cupIndex = cupSizes.indexOf(cup);
   
   if (cupIndex === -1) {
     return { error: "Taille de bonnet invalide" };
   }
 
-  if (![70, 75, 80, 85, 90, 95, 100, 105, 110].includes(band)) {
-    return { error: "Tour de dos invalide" };
-  }
-
-  // Calcul des plages de mesures
+  // Plages de mesures ajustées pour correspondre aux tailles standard
   const underBustRanges: { [key: number]: [number, number] } = {
-    70: [63, 67],
-    75: [68, 72],
-    80: [73, 77],
-    85: [78, 82],
-    90: [83, 87],
-    95: [88, 92],
-    100: [93, 97],
-    105: [98, 102],
-    110: [103, 107]
+    65: [60, 67],
+    70: [68, 72],
+    75: [73, 77],
+    80: [78, 82],
+    85: [83, 87],
+    90: [88, 92],
+    95: [93, 97],
+    100: [98, 102],
+    105: [103, 107],
+    110: [108, 112],
+    115: [113, 117],
+    120: [118, 120]
   };
 
   const underBustRange = underBustRanges[band];
+  if (!underBustRange) {
+    return { error: "Tour de dos invalide" };
+  }
+
+  // Calcul ajusté pour la correspondance avec cmToBraSize
   const cupDifference = (cupIndex + 4) * 2.5;
   const bustRange: [number, number] = [
     Math.round(underBustRange[0] + cupDifference),
