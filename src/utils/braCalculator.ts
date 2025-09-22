@@ -57,7 +57,7 @@ export const cmToBraSize = (underBust: number, bust: number): Result => {
   // Calcul de la taille de bonnet avec plus de tailles
   const cupSizes = ['AA', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
   const difference = bust - underBust;
-  const cupIndex = Math.floor(difference / 2.5) - 4;
+  const cupIndex = Math.round((difference - 13) / 2) + 1;
 
   if (cupIndex < 0 || cupIndex >= cupSizes.length) {
     return { error: "Différence de mesures hors limites pour le calcul du bonnet" };
