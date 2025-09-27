@@ -47,7 +47,7 @@ export const cmToBraSize = (underBust: number, bust: number): Result => {
     118: 135, 119: 135, 120: 135, 121: 135, 122: 135
   };
 
-  const roundedUnderBust = Math.round(underBust);
+  const roundedUnderBust = Math.floor(underBust);
   const band = bandSizes[roundedUnderBust];
   
   if (!band) {
@@ -57,7 +57,7 @@ export const cmToBraSize = (underBust: number, bust: number): Result => {
   // Calcul de la taille de bonnet avec plus de tailles
   const cupSizes = ['AA', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
   const difference = bust - underBust;
-  const cupIndex = Math.round((difference - 13) / 2) + 1;
+  const cupIndex = Math.floor((difference - 13) / 2) + 1;
 
   if (cupIndex < 0 || cupIndex >= cupSizes.length) {
     return { error: "Différence de mesures hors limites pour le calcul du bonnet" };
@@ -152,8 +152,8 @@ export const braSizeToCm = (band: number, cup: string): { underBust: [number, nu
   const cupDifferenceMax = cupDifferenceMin + step;
 
   const bustRange: [number, number] = [
-    Math.round(underBustRange[0] + cupDifferenceMin),
-    Math.round(underBustRange[1] + cupDifferenceMax)
+    Math.floor(underBustRange[0] + cupDifferenceMin),
+    Math.floor(underBustRange[1] + cupDifferenceMax)
   ];
 
   console.log("Résultat braSizeToCm:", { underBustRange, bustRange });
