@@ -20,9 +20,9 @@ type Result = BraSize | { error: string };
 export const cmToBraSize = (underBust: number, bust: number): Result => {
   console.log("Entrée cmToBraSize:", { underBust, bust });
   
-  // Élargissement des limites de validation
-  if (underBust < 60 || underBust > 120) {
-    return { error: "Le tour de dessous de poitrine doit être entre 60 et 120 cm" };
+  // Limites de validation selon la norme AFNOR française
+  if (underBust < 63 || underBust > 122) {
+    return { error: "Le tour de dessous de poitrine doit être entre 63 et 122 cm" };
   }
   if (bust < 70 || bust > 150) {
     return { error: "Le tour de poitrine doit être entre 70 et 150 cm" };
@@ -31,20 +31,20 @@ export const cmToBraSize = (underBust: number, bust: number): Result => {
     return { error: "Le tour de poitrine doit être plus grand que le tour de dessous de poitrine" };
   }
 
-  // Calcul de la taille de bande
+  // Calcul de la taille de bande selon la norme AFNOR française
   const bandSizes: { [key: number]: number } = {
-    60: 65, 61: 65, 62: 65, 63: 65, 64: 65, 65: 65, 66: 65, 67: 65,
-    68: 70, 69: 70, 70: 70, 71: 70, 72: 70,
-    73: 75, 74: 75, 75: 75, 76: 75, 77: 75,
-    78: 80, 79: 80, 80: 80, 81: 80, 82: 80,
-    83: 85, 84: 85, 85: 85, 86: 85, 87: 85,
-    88: 90, 89: 90, 90: 90, 91: 90, 92: 90,
-    93: 95, 94: 95, 95: 95, 96: 95, 97: 95,
-    98: 100, 99: 100, 100: 100, 101: 100, 102: 100,
-    103: 105, 104: 105, 105: 105, 106: 105, 107: 105,
-    108: 110, 109: 110, 110: 110, 111: 110, 112: 110,
-    113: 115, 114: 115, 115: 115, 116: 115, 117: 115,
-    118: 120, 119: 120, 120: 120
+    63: 80, 64: 80, 65: 80, 66: 80, 67: 80,
+    68: 85, 69: 85, 70: 85, 71: 85, 72: 85,
+    73: 90, 74: 90, 75: 90, 76: 90, 77: 90,
+    78: 95, 79: 95, 80: 95, 81: 95, 82: 95,
+    83: 100, 84: 100, 85: 100, 86: 100, 87: 100,
+    88: 105, 89: 105, 90: 105, 91: 105, 92: 105,
+    93: 110, 94: 110, 95: 110, 96: 110, 97: 110,
+    98: 115, 99: 115, 100: 115, 101: 115, 102: 115,
+    103: 120, 104: 120, 105: 120, 106: 120, 107: 120,
+    108: 125, 109: 125, 110: 125, 111: 125, 112: 125,
+    113: 130, 114: 130, 115: 130, 116: 130, 117: 130,
+    118: 135, 119: 135, 120: 135, 121: 135, 122: 135
   };
 
   const roundedUnderBust = Math.round(underBust);
@@ -124,20 +124,20 @@ export const braSizeToCm = (band: number, cup: string): { underBust: [number, nu
     return { error: "Taille de bonnet invalide" };
   }
 
-  // Plages de mesures ajustées pour correspondre aux tailles standard
+  // Plages de mesures selon la norme AFNOR française
   const underBustRanges: { [key: number]: [number, number] } = {
-    65: [60, 67],
-    70: [68, 72],
-    75: [73, 77],
-    80: [78, 82],
-    85: [83, 87],
-    90: [88, 92],
-    95: [93, 97],
-    100: [98, 102],
-    105: [103, 107],
-    110: [108, 112],
-    115: [113, 117],
-    120: [118, 120]
+    80: [63, 67],
+    85: [68, 72],
+    90: [73, 77],
+    95: [78, 82],
+    100: [83, 87],
+    105: [88, 92],
+    110: [93, 97],
+    115: [98, 102],
+    120: [103, 107],
+    125: [108, 112],
+    130: [113, 117],
+    135: [118, 122]
   };
 
   const underBustRange = underBustRanges[band];
