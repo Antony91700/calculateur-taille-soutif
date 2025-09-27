@@ -145,11 +145,15 @@ export const braSizeToCm = (band: number, cup: string): { underBust: [number, nu
     return { error: "Tour de dos invalide" };
   }
 
-  // Calcul ajusté pour la correspondance avec cmToBraSize
-  const cupDifference = (cupIndex + 4) * 2.5;
+  // Calcul AFNOR : bonnet A = +13 cm, puis +2 cm par taille
+  const baseDiff = 13; // point de départ bonnet A
+  const step = 2;      // incrément par bonnet
+  const cupDifferenceMin = baseDiff + (cupIndex - 1) * step;
+  const cupDifferenceMax = cupDifferenceMin + step;
+
   const bustRange: [number, number] = [
-    Math.round(underBustRange[0] + cupDifference),
-    Math.round(underBustRange[1] + cupDifference)
+    Math.round(underBustRange[0] + cupDifferenceMin),
+    Math.round(underBustRange[1] + cupDifferenceMax)
   ];
 
   console.log("Résultat braSizeToCm:", { underBustRange, bustRange });
